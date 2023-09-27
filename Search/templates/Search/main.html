@@ -1,0 +1,49 @@
+{% extends 'Search/base.html' %}
+
+{% block title %} LiveSearch {% endblock title %}
+
+{% block content %}
+
+<input id="search_here" class="form-control mb-3 " placeholder="search">
+<div id="box">
+  {% for item in object_list %}
+    <b>{{ item }}</b> <br>
+  {% endfor %}
+
+</div>
+
+{% endblock content %}
+
+
+  {% block scripts %}
+
+<script>
+
+  const data = '{{qs_json}}'
+  console.log(data)
+
+  const rdata = JSON.parse(data.replace(/&quot;/g, '"'))
+  console.log(rdata)
+
+  const input = document.getElementById('search_here')
+  console.log(input)
+
+  let filterarray = []
+
+  input.addEventListener('keyup', (e) => {
+    box.innerHTML = "";
+    filterArray = rdata.filter(info => info['name'].includes(e.target.value));
+    console.log(filterArray);
+    if (filterArray.length > 0) {
+        filterArray.forEach(info => {
+            box.innerHTML += `<b>${info['name']}</b><br>`;
+        });
+    } else {
+        box.innerHTML = "<b>No result found..</b><br>";
+    }
+});
+
+
+</script>
+
+  {% endblock scripts %}
